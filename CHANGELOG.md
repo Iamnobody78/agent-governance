@@ -2,6 +2,24 @@
 
 All notable changes to agent-governance will be documented in this file.
 
+
+## [1.7.0] - 2026-08-01
+
+### Phase 1: Layer 3 Standardization (6 new modules, 125 tests, 551 total)
+
+#### Governance Benchmarks
+- VeritasRunner (veritas_runner.py) - 4-dimension governability assessment
+- HummblRunner (hummbl_runner.py) - 7 safety primitives, 29 test cases
+- WardenRunner (warden_runner.py) - 12-layer posture scanner, A+-F grade
+
+#### Telemetry + Protocols
+- GovernanceTelemetry (otel_exporter.py) - OTel + GAAT GTS events
+- A2AAdapter (a2a_adapter.py) - A2A protocol message encoding
+
+#### Operations
+- GitHubGuardian (github_guardian.py) - Daily health scanner, 0-100 scoring
+- guardian-daily-scan.yml - Automated CI/CD health workflow
+
 ## [1.5.0] — 2026-08-01
 
 ### 🧠 Core Modules (5 new)

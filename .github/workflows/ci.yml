@@ -32,6 +32,10 @@ jobs:
         run: |
           python governance/meta/monotonic_constraint.py --ci-check
 
+      - name: Stage 4 Meta-Theory Consistency (P0)
+        run: |
+          python governance/meta/meta_theory_consistency.py --ci-check
+
   deadlock-and-integration:
     runs-on: ubuntu-latest
     timeout-minutes: 2

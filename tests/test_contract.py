@@ -74,3 +74,62 @@ def test_monotonic_constraint_import():
     r = mc.report()
     assert r["status"] == "cold_start"
     assert r["p3_health"] == 1.0
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# P0: Meta-Theory Consistency Tests
+# ═══════════════════════════════════════════════════════════════════════════
+
+def test_meta_theory_consistency_import():
+    """P0 meta-theory checker is importable with class + constants."""
+    from governance.meta.meta_theory_consistency import (
+        ConsistencyChecker, CONFLICT_PAIRS, SEVERITY_WEIGHT,
+    )
+    assert len(CONFLICT_PAIRS) == 12, "Must have 12 conflict pairs"
+    assert len(SEVERITY_WEIGHT) == 5, "Must have P0-P4 weights"
+    checker = ConsistencyChecker()
+    assert checker is not None
+
+
+def test_meta_theory_consistency_conflict_detection():
+    """detect_conflicts() returns a list of conflict dictionaries."""
+    from governance.meta.meta_theory_consistency import ConsistencyChecker
+    checker = ConsistencyChecker()
+    conflicts = checker.detect_conflicts()
+    assert isinstance(conflicts, list), "detect_conflicts must return a list"
+
+    for c in conflicts:
+        assert "layer_a" in c
+        assert "layer_b" in c
+        assert "severity" in c
+        assert "description" in c
+        assert c["severity"] in ("P0", "P1", "P2", "P3", "P4")
+
+
+def test_meta_theory_consistency_compute_score():
+    """compute_score() returns 0-100 with meaningful structure."""
+    from governance.meta.meta_theory_consistency import ConsistencyChecker
+    checker = ConsistencyChecker()
+    # Force empty layers for a clean 100 baseline
+    checker._layers = {}
+    score = checker.compute_score()
+    assert score["consistency_score"] == 100.0
+    assert score["conflicts_found"] == 0
+    assert score["status"] == "CONSISTENT"
+
+
+def test_meta_theory_consistency_full_pipeline():
+    """Full pipeline: detect -> compute -> report."""
+    from governance.meta.meta_theory_consistency import ConsistencyChecker
+    checker = ConsistencyChecker()
+    conflicts = checker.detect_conflicts()
+    score = checker.compute_score()
+
+    assert 0.0 <= score["consistency_score"] <= 100.0
+    assert isinstance(score["conflicts_found"], int)
+    assert score["status"] in ("CONSISTENT", "WARNING", "BLOCKED")
+    
+    # Full report
+    report = checker.report()
+    assert "consistency_score" in report
+    assert "conflict_details" in report

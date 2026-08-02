@@ -1,12 +1,13 @@
 # Agent Governance Framework
 
-**AI Agent 治理标准框架 — 让任何 Agent 具备元认知、自演进、安全边界。**
+> ⚠️ **状态声明**: 本仓库 v1.7.0 已归档为**概念验证原型 (Proof-of-Concept)**。
+> 详见 [CRITIQUE.md](CRITIQUE.md) — 概念与实现不对齐的完整审计。
+> 生产级 v2 正在新架构中重建。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
-[![Tests: 284/284](https://img.shields.io/badge/Tests-284%2F284-brightgreen.svg)](https://github.com/ivy-ai/agent-governance/actions)
+[![Status: PoC](https://img.shields.io/badge/Status-PoC-yellow.svg)](CRITIQUE.md)
 [![Ruff: 0](https://img.shields.io/badge/Ruff-0%20errors-brightgreen.svg)](https://github.com/astral-sh/ruff)
-[![Status: Active](https://img.shields.io/badge/Status-Active-brightgreen.svg)](https://github.com/ivy-ai/agent-governance)
 
 ---
 
@@ -16,10 +17,10 @@
 
 | # | 问题 | 表现 | agent-governance 的解决方案 |
 |:--:|------|------|---------------------------|
-| 1 | **无元认知** | Agent 不知道"自己不知道什么"，不会主动请求帮助 | **MetaCognitiveLoop** — 监控→评估→策略A/B生成→调节→验证 |
-| 2 | **无自演进** | Agent 行为固定，卡在局部最优，无法从失败中学习 | **FixedPointDetector** — 假收敛检测 + 扰动注入 + 退火 |
-| 3 | **无安全边界** | Agent 可能执行"理论上正确但实际危险"的操作 | **GodelianBoundary** — 识别自指命题，路由到外部验证 |
-| 4 | **无自我验证** | 系统声称"我是安全的"但无法自证 | **SelfCheckEngine** — 三层验证：矛盾检测 + 完备性分析 + 信任根管理 |
+| 1 | **无元认知** | Agent 不知道"自己不知道什么"，不会主动请求帮助 | ⚠️ PoC: 阈值检测器（均值>0.8 & 多样性<0.3） |
+| 2 | **无自演进** | Agent 行为固定，卡在局部最优，无法从失败中学习 | ⚠️ PoC: 迭代收敛检测（delta < epsilon） |
+| 3 | **无安全边界** | Agent 可能执行"理论上正确但实际危险"的操作 | ⚠️ PoC: 关键词正则匹配（"this system", "always" 等） |
+| 4 | **无自我验证** | 系统声称"我是安全的"但无法自证 | ⚠️ PoC: len(description) < 3 检查 + risk_level > 0.9 |
 
 **`agent-governance` 不是一个 Agent 框架——它是任何 Agent 框架的上层治理层。**
 
@@ -30,14 +31,14 @@
 | 维度 | LangChain / AutoGen / CrewAI | agent-governance |
 |------|------------------------------|------------------|
 | **定位** | Agent 开发框架 | Agent 治理层（插入到任何框架之上） |
-| **元认知** | ❌ 无 | ✅ 5 阶段元认知闭环 |
-| **安全边界** | ⚠️ 仅规则过滤 | ✅ 哥德尔边界 + 自指检测 + 外部验证路由 |
-| **自演进** | ❌ 无 | ✅ 不动点检测 + 假收敛防护 |
-| **可观测性** | ⚠️ 基础日志 | ✅ 3 模块 get_state() + get_dashboard() |
-| **数字孪生** | ❌ 无 | ✅ Sim-to-Real Gap 量化 + 漂移检测 |
-| **信任根** | ❌ 无 | ✅ 7 类信任根（公理 / 外部锚点 / 人类监督 / 已证明） |
-| **学术锚点** | ❌ 无 | ✅ 7 篇顶会论文映射 (ACL/ICML/NeurIPS 2025-2026) |
-| **侵入性** | 必须替换 Agent 框架 | **零侵入**——实现 4 个接口方法即可 |
+| **元认知** | ❌ 无 | ⚠️ PoC: 阈值检测 + 玩具算式（见 CRITIQUE.md） |
+| **安全边界** | ⚠️ 仅规则过滤 | ⚠️ PoC: 关键词正则匹配（非哥德尔编号） |
+| **自演进** | ❌ 无 | ⚠️ PoC: delta < epsilon 阈值（非不动点理论） |
+| **可观测性** | ⚠️ 基础日志 | ⚠️ PoC: get_state() 字典检查 |
+| **数字孪生** | ❌ 无 | ⚠️ PoC: DataClass 包装器 |
+| **信任根** | ❌ 无 | ⚠️ PoC: 枚举类型定义 |
+| **学术锚点** | ❌ 无 | ⚠️ PoC: 论文引用仅限命名，未实现对应算法 |
+| **侵入性** | 必须替换 Agent 框架 | ⚠️ PoC: ABC 继承（非零侵入 Sidecar） |
 
 ---
 

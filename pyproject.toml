@@ -1,7 +1,7 @@
 [project]
 name = "agent-governance"
-version = "1.0.0"
-description = "A domain-agnostic AI Agent governance framework"
+version = "1.5.0"
+description = "AI Agent Governance Framework with meta-cognition, self-evolution, and safety boundaries — FixedPointDetector, GodelianBoundary, MetaCognitiveLoop, SelfCheckEngine, DigitalTwinCalibrator"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -10,7 +10,7 @@ authors = [
 ]
 keywords = ["ai-agent", "governance", "meta-governance", "agent-framework"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.10",

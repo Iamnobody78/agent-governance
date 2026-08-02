@@ -36,6 +36,10 @@ jobs:
         run: |
           python governance/meta/meta_theory_consistency.py --ci-check
 
+      - name: Stage 5 🚦 Applicability Gate (P2)
+        run: |
+          python -c "from governance.meta.applicability_gate import ApplicabilityGate; import sys; sys.exit(ApplicabilityGate().ci_check())"
+
   deadlock-and-integration:
     runs-on: ubuntu-latest
     timeout-minutes: 2

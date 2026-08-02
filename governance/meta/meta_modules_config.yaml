@@ -1,0 +1,48 @@
+# Meta Modules Configuration
+# ==========================
+# Centralized configuration for FixedPointDetector, GodelianBoundary,
+# and MetaCognitiveLoop. Supports runtime reloading.
+#
+# Schema version: 1.0
+
+fixed_point_detector:
+  epsilon: 0.01                  # Convergence threshold
+  patience: 3                    # Rounds of delta < epsilon before SUSPICIOUS
+  window_size: 5                 # Sliding window for trend analysis
+  oscillation_threshold: 0.001   # Minimum delta to count as direction change
+  divergence_factor: 2.0         # Score drop factor to trigger DIVERGING
+
+  # Anti-premature-convergence (v11.28 amendment)
+  suspicion:
+    perturbation_rounds: 5       # Rounds to test after SUSPICIOUS
+    max_suspicion_triggers: 10   # Max times SUSPICIOUS is triggered before forcing stop
+
+  # Perturbation annealing
+  perturbation:
+    epsilon_greedy_boost: 0.3    # Exploration rate increase during perturbation
+    noise_sigma: 0.05            # Gaussian noise std for sensor perturbation
+    annealing_gamma: 0.95        # Decay factor for perturbation amplitude
+
+godelian_boundary:
+  self_ref_threshold: 0.25       # Self-reference score > this → EXTERNALIZE
+  undecidable_threshold: 0.60    # Self-reference score > this → UNDECIDABLE
+
+  # Externalization tracking (v11.28 amendment)
+  external_tracking:
+    max_delegations: 10          # Same-type propositions delegated > this → compress
+    compress_to_abdl: true       # Whether to auto-generate ABDL rules
+
+meta_cognitive_loop:
+  decision_buffer_size: 1000     # Max decisions to retain
+  cycle_history_size: 50         # Max cycle traces to retain
+
+  # Strategy generation
+  strategy:
+    max_bold_strategies: 3       # Max bold strategies per cycle (top-N gaps)
+    max_conservative_strategies: 5  # Max conservative strategies per cycle
+    bold_risk_threshold: 0.6     # Risk level above which strategy is considered "bold"
+
+  # Verification
+  verification:
+    require_godelian_check: true # Whether to run Godelian check on all strategies
+    max_self_check_failures: 3   # Consecutive failures before raising alarm

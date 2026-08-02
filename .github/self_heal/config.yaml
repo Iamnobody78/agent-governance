@@ -1,0 +1,27 @@
+# Self-Heal Configuration
+# Auto-generates hotfix branches on CI failure
+
+enabled: true
+mode: "non_blocking"  # Never block main pipeline
+
+entropy:
+  threshold: 0.15  # 15% code entropy delta warning
+  ghost_dir: "liquid/ghosts/"
+
+monotonic:
+  min_safe_ratio: 0.7  # P3: must keep 70%+ actions in safe zone
+  convergence_required: true
+
+retry:
+  max_attempts: 2
+  backoff_seconds: 30
+
+branches:
+  hotfix_prefix: "hotfix/ci_fix_"
+  auto_push: true  # Push hotfix branch to remote
+  auto_merge: false  # Never auto-merge — human review required
+
+notifications:
+  on_entropy_warning: "console_only"
+  on_contract_break: "block_merge"
+  on_deadlock: "block_merge"

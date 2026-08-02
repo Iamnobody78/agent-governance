@@ -13,9 +13,8 @@ Design based on P3 monotonic_constraint.py architecture.
 """
 import json
 import sys
-from pathlib import Path
 from collections import defaultdict
-from typing import Dict, List, Set, Tuple, Optional
+from pathlib import Path
 
 _PROJECT = Path(__file__).resolve().parent.parent.parent.parent  # agent-governance/ -> project root
 AUDIT_REPORT_DIR = _PROJECT / ".aionui" / "meta_governance" / "audit" / "reports"
@@ -50,7 +49,7 @@ class ConsistencyChecker:
         self.report_path = audit_report_path or self._latest_report()
         self._load()
 
-    def _latest_report(self) -> Optional[Path]:
+    def _latest_report(self) -> Path | None:
         reports = sorted(AUDIT_REPORT_DIR.glob("meta_audit_*.json"), reverse=True)
         return reports[0] if reports else None
 
@@ -67,7 +66,7 @@ class ConsistencyChecker:
 
     # ── Conflict Detection ──────────────────────────────────────────────────
 
-    def detect_conflicts(self) -> List[dict]:
+    def detect_conflicts(self) -> list[dict]:
         """Detect logical conflicts between meta-layer pairs."""
         conflicts = []
 
@@ -114,7 +113,7 @@ class ConsistencyChecker:
 
         return conflicts
 
-    def _find_conflict_keywords(self, recs_a: List[str], recs_b: List[str]) -> List[str]:
+    def _find_conflict_keywords(self, recs_a: list[str], recs_b: list[str]) -> list[str]:
         """Detect contradictory keyword pairs between two recommendation sets."""
         opposition_pairs = [
             (["explore", "expand", "increase", "grow", "broaden", "extend", "widen", "add", "more"],
@@ -189,7 +188,7 @@ class ConsistencyChecker:
         result = self.compute_score()
         conflicts = result["conflict_details"]
 
-        print(f"P0: Meta-Theory Consistency Check")
+        print("P0: Meta-Theory Consistency Check")
         print(f"  Layers loaded:       {len(self._layers)}")
         print(f"  Pairs checked:       {result['total_pairs_checked']}")
         print(f"  Conflicts found:     {result['conflicts_found']}")
@@ -197,7 +196,7 @@ class ConsistencyChecker:
         print(f"  Status:              {result['status']}")
 
         if conflicts:
-            print(f"\n  Conflict details:")
+            print("\n  Conflict details:")
             for c in conflicts:
                 kw = ",".join(c.get("conflict_keywords", [])[:3])
                 print(f"    [{c['severity']}] {c['layer_a']} vs {c['layer_b']}: "
@@ -208,13 +207,13 @@ class ConsistencyChecker:
                     print(f"         keywords: {kw}")
 
         if result["consistency_score"] < 50:
-            print(f"\n  BLOCK: Critical consistency issues — human review required.")
+            print("\n  BLOCK: Critical consistency issues — human review required.")
             return 2
         elif result["consistency_score"] < 85:
-            print(f"\n  WARNING: Minor consistency issues — review recommended.")
+            print("\n  WARNING: Minor consistency issues — review recommended.")
             return 1
         else:
-            print(f"\n  PASS: Meta-theory is logically consistent.")
+            print("\n  PASS: Meta-theory is logically consistent.")
             return 0
 
 

@@ -1,4 +1,4 @@
-"""
+r"""
 P3: Monotonic Constraint Engine
 ================================
 Ensures Agent behavior space converges monotonically — the agent's
@@ -18,8 +18,6 @@ import json
 import sys
 import time
 from pathlib import Path
-from collections import defaultdict
-from typing import Dict, Set
 
 
 class MonotonicConstraint:
@@ -48,8 +46,8 @@ class MonotonicConstraint:
                 self._iteration = data.get("iteration", 0)
                 self._convergence_slope = data.get("convergence_slope", 0.0)
         else:
-            self._safe_set: Set[tuple] = set()
-            self._unsafe_set: Set[tuple] = set()
+            self._safe_set: set[tuple] = set()
+            self._unsafe_set: set[tuple] = set()
             self._iteration = 0
             self._convergence_slope = 0.0
 
@@ -114,20 +112,20 @@ class MonotonicConstraint:
     def ci_check(self) -> int:
         """CI entry point: returns 0 (pass) or 1 (warning)."""
         r = self.report()
-        print(f"P3 Monotonic Constraint Check")
+        print("P3 Monotonic Constraint Check")
         print(f"  Iteration:    {r['iteration']}")
         print(f"  Safe actions: {r['safe_actions']}")
         print(f"  Unsafe:       {r['unsafe_actions']}")
         print(f"  Safe ratio:   {r['safe_ratio']:.2%}")
         print(f"  Slope:        {int(r['convergence_slope']):+d}")
         print(f"  P3 Health:    {r['p3_health']:.2f}/1.0")
-        
+
         if not r["convergence"] and r["iteration"] > 0:
             print(f"  WARNING: Monotonic constraint violated — unsafe actions expanded by {r['convergence_slope']:+d}")
-            print(f"  This PR introduces new unsafe behaviors. Review manually or run --reset-safe.")
+            print("  This PR introduces new unsafe behaviors. Review manually or run --reset-safe.")
             return 1  # Warning, not blocking
-        
-        print(f"  PASS: Behavior space is monotonically converging.")
+
+        print("  PASS: Behavior space is monotonically converging.")
         return 0
 
 

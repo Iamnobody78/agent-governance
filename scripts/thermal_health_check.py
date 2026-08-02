@@ -5,11 +5,10 @@ Reads .aionui/entropy.log (if exists) and compares current code entropy
 against baseline. If cognitive temperature delta exceeds threshold,
 generates ghost patch as warning (non-blocking).
 """
-import sys
 import json
-import hashlib
-from pathlib import Path
+import sys
 from datetime import datetime, timezone
+from pathlib import Path
 
 _PROJECT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_PROJECT))
@@ -80,7 +79,7 @@ def main():
     baseline_data = load_baseline()
     baseline = baseline_data.get("baseline_entropy", 0.0)
 
-    print(f"Thermal Health Check")
+    print("Thermal Health Check")
     print(f"  Baseline entropy: {baseline}")
     print(f"  Current entropy:  {current}")
 
@@ -96,7 +95,7 @@ def main():
         ghost = generate_ghost_patch(delta, current)
         print(f"  WARNING: Entropy delta {delta:.2%} > {ENTROPY_THRESHOLD:.0%} threshold")
         print(f"  Ghost patch created: {ghost}")
-        print(f"  (Non-blocking — review recommended but not required)")
+        print("  (Non-blocking — review recommended but not required)")
         return 0  # Non-blocking
 
     print(f"  PASS: Entropy within budget ({delta:.2%} < {ENTROPY_THRESHOLD:.0%})")

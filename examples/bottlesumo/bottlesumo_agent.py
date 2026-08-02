@@ -5,8 +5,9 @@ Demonstrates how to integrate a sumo robot agent with the
 Agent Governance Framework by implementing AgentInterface.
 """
 import time
-import numpy as np
 from pathlib import Path
+
+import numpy as np
 
 # Import agent interface (when installed as package)
 try:

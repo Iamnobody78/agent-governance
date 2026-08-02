@@ -7,7 +7,7 @@ capabilities: safety guardrails, shadow-loop self-evolution, meta-audit,
 ABDL rule evaluation, reputation tracking, and more.
 """
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List
+from typing import Any
 
 
 class AgentInterface(ABC):
@@ -20,7 +20,7 @@ class AgentInterface(ABC):
     """
 
     @abstractmethod
-    def observe(self) -> Dict[str, Any]:
+    def observe(self) -> dict[str, Any]:
         """Return the current observation of the agent's environment.
 
         Must include:
@@ -34,7 +34,7 @@ class AgentInterface(ABC):
         pass
 
     @abstractmethod
-    def act(self, action: Any) -> Dict[str, Any]:
+    def act(self, action: Any) -> dict[str, Any]:
         """Execute the given action and return the result.
 
         Args:
@@ -47,7 +47,7 @@ class AgentInterface(ABC):
         pass
 
     @abstractmethod
-    def get_metrics(self) -> Dict[str, float]:
+    def get_metrics(self) -> dict[str, float]:
         """Return current runtime metrics.
 
         Must include:
@@ -61,7 +61,7 @@ class AgentInterface(ABC):
         pass
 
     @abstractmethod
-    def get_capabilities(self) -> List[str]:
+    def get_capabilities(self) -> list[str]:
         """Return list of agent capabilities.
 
         Examples: ["rl_training", "simulation", "hardware_control", "code_generation"]
@@ -73,7 +73,7 @@ class AgentInterface(ABC):
 
     # ── Optional hooks (override if needed) ──
 
-    def on_governance_alert(self, alert: Dict[str, Any]) -> None:
+    def on_governance_alert(self, alert: dict[str, Any]) -> None:  # noqa: B027
         """Called when the governance layer issues an alert for this agent."""
         pass
 
@@ -83,6 +83,6 @@ class AgentInterface(ABC):
         """
         return False  # Default: human review required
 
-    def shutdown(self) -> None:
+    def shutdown(self) -> None:  # noqa: B027
         """Cleanup resources before agent termination."""
         pass

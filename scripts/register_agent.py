@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Register an Agent with the Governance Framework."""
 
-import sys
 import argparse
+import sys
 from pathlib import Path
+
 from scripts.validate_interfaces import validate_agent
 
 
@@ -16,13 +17,13 @@ def register(agent_path: str, agent_name: str = None) -> dict:
     # Validate interface
     result = validate_agent(agent_path)
     if not result["valid"]:
-        print(f"  FAILED: Interface validation failed")
+        print("  FAILED: Interface validation failed")
         for err in result["errors"]:
             print(f"    - {err}")
         return result
 
     # Registration would write to config/agents.yaml in production
-    print(f"  PASSED: All 4 interface methods implemented")
+    print("  PASSED: All 4 interface methods implemented")
     print(f"  Classes found: {result['classes_found']}")
     print(f"  Agent '{agent_name}' registered successfully")
 

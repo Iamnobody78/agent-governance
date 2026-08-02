@@ -1,6 +1,6 @@
 [project]
 name = "agent-governance"
-version = "1.5.0"
+version = "1.6.0"
 description = "AI Agent Governance Framework with meta-cognition, self-evolution, and safety boundaries — FixedPointDetector, GodelianBoundary, MetaCognitiveLoop, SelfCheckEngine, DigitalTwinCalibrator"
 readme = "README.md"
 requires-python = ">=3.10"

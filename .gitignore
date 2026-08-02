@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Model weights (too large for git)
+*.pt
+*.pth
+*.onnx
+*.h5
+*.pb
+*.ckpt
+
+# Logs
+*.log
+logs/
+
+# Agent state (local only)
+.agent_state/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Sensitive
+.env
+*.key
+*.pem
+secrets/

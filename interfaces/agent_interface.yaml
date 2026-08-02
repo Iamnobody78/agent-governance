@@ -1,0 +1,54 @@
+# Agent Interface Specification
+# This YAML defines the contract between any Agent and the Governance Framework.
+
+interface:
+  version: "1.0.0"
+  description: "Domain-agnostic Agent Governance Interface"
+
+required_methods:
+  - name: observe
+    returns:
+      type: dict
+      fields:
+        - state: any        # Current state representation
+        - timestamp: float  # time.time()
+        - confidence: float # 0.0-1.0
+
+  - name: act
+    args:
+      - action: any  # Action to execute
+    returns:
+      type: dict
+      fields:
+        - status: enum[ok, error]
+        - reward: float
+        - done: bool
+        - info: dict
+
+  - name: get_metrics
+    returns:
+      type: dict
+      fields:
+        - success_rate: float    # 0.0-1.0
+        - latency: float         # seconds
+        - resource_usage: float  # 0.0-1.0
+
+  - name: get_capabilities
+    returns:
+      type: list[str]
+      description: "Agent capabilities for task routing"
+
+optional_hooks:
+  - name: on_governance_alert
+    args:
+      - alert: dict
+    description: "Called when governance issues an alert"
+
+  - name: on_evolution_patch
+    args:
+      - patch: str
+    returns: bool
+    description: "Accept (True) or reject (False) self-evolution patch"
+
+  - name: shutdown
+    description: "Cleanup before termination"

@@ -32,6 +32,11 @@ from governance.meta.reality_bridge import (
     ExtendedRealityBridgeRouter, TaGHookRegistry, TaGHook, TaGHookType,
     TaGHookAction, TaGHookResult, TaGRoutingResult,
 )
+from governance.meta.database_governance import (
+    DatabaseGovernance, DatabaseGovernanceConfig, DatabaseSession,
+    QueryParser, QueryEstimate, QueryGovernanceResult,
+    QueryAction, QuerySeverity, QueryType,
+)
 
 __all__ = [
     # P0
@@ -48,6 +53,10 @@ __all__ = [
     # RealityBridge + TaG
     "ExtendedRealityBridgeRouter", "TaGHookRegistry", "TaGHook",
     "TaGHookType", "TaGHookAction", "TaGHookResult", "TaGRoutingResult",
+    # Database Governance
+    "DatabaseGovernance", "DatabaseGovernanceConfig", "DatabaseSession",
+    "QueryParser", "QueryEstimate", "QueryGovernanceResult",
+    "QueryAction", "QuerySeverity", "QueryType",
     # Phase 3
     "MetaCognitiveLoop", "DecisionLog", "FailurePattern", "GapReport",
     "LoopPhase", "LoopTrace", "SelfCheckBenchmark", "Strategy", "StrategyType",

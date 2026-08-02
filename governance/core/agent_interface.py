@@ -31,7 +31,6 @@ class AgentInterface(ABC):
         Returns:
             dict with at minimum {"state": ..., "timestamp": ..., "confidence": ...}
         """
-        pass
 
     @abstractmethod
     def act(self, action: Any) -> dict[str, Any]:
@@ -44,7 +43,6 @@ class AgentInterface(ABC):
             dict with {"status": "ok"|"error", "reward": float,
                        "done": bool, "info": dict}
         """
-        pass
 
     @abstractmethod
     def get_metrics(self) -> dict[str, float]:
@@ -58,7 +56,6 @@ class AgentInterface(ABC):
         Returns:
             dict of metric_name -> float_value
         """
-        pass
 
     @abstractmethod
     def get_capabilities(self) -> list[str]:
@@ -69,13 +66,12 @@ class AgentInterface(ABC):
         Used by the meta-scheduler for task routing and capability-aware
         resource allocation.
         """
-        pass
 
     # ── Optional hooks (override if needed) ──
 
-    def on_governance_alert(self, alert: dict[str, Any]) -> None:  # noqa: B027
+    def on_governance_alert(self, alert: dict[str, Any]) -> None:
         """Called when the governance layer issues an alert for this agent."""
-        pass
+        return
 
     def on_evolution_patch(self, patch: str) -> bool:
         """Called when self-evolution engine proposes a patch.
@@ -83,6 +79,6 @@ class AgentInterface(ABC):
         """
         return False  # Default: human review required
 
-    def shutdown(self) -> None:  # noqa: B027
+    def shutdown(self) -> None:
         """Cleanup resources before agent termination."""
-        pass
+        return

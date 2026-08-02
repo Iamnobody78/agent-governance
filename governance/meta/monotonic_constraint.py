@@ -29,7 +29,7 @@ class MonotonicConstraint:
     Monotonic constraint: unsafe_actions(t+1) <= unsafe_actions(t)
     """
 
-    def __init__(self, state_dir: str = None):
+    def __init__(self, state_dir: str | None = None):
         if state_dir is None:
             state_dir = Path(__file__).resolve().parent.parent.parent / ".agent_state"
         self.state_dir = Path(state_dir)
@@ -41,8 +41,8 @@ class MonotonicConstraint:
         if self.state_file.exists():
             with open(self.state_file, encoding="utf-8") as f:
                 data = json.load(f)
-                self._safe_set = set(tuple(a) for a in data.get("safe_actions", []))
-                self._unsafe_set = set(tuple(a) for a in data.get("unsafe_actions", []))
+                self._safe_set = {tuple(a) for a in data.get("safe_actions", [])}
+                self._unsafe_set = {tuple(a) for a in data.get("unsafe_actions", [])}
                 self._iteration = data.get("iteration", 0)
                 self._convergence_slope = data.get("convergence_slope", 0.0)
         else:

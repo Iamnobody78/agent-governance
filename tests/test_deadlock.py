@@ -1,10 +1,10 @@
-"""Deadlock Detection — verify Agent state machine is thread-safe."""
+﻿"""Deadlock Detection ??verify Agent state machine is thread-safe."""
+
+import sys
+import threading
+from pathlib import Path
 
 import pytest
-import threading
-import time
-from pathlib import Path
-import sys
 
 _PROJECT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_PROJECT))
@@ -24,7 +24,7 @@ def test_concurrent_agent_creation():
                 agent.act(0)
                 agent.get_metrics()
                 agent.get_capabilities()
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             errors.append(str(e))
 
     threads = [threading.Thread(target=create_and_use) for _ in range(5)]
@@ -47,7 +47,7 @@ def test_monotonic_constraint_thread_safety():
         try:
             for i in range(50):
                 mc.record_action(i % 21, hash(str(i)), safe=(i % 3 != 0))
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             errors.append(str(e))
 
     threads = [threading.Thread(target=record_batch) for _ in range(4)]

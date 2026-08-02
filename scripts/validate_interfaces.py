@@ -18,7 +18,7 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from governance.core.agent_interface import AgentInterface  # noqa: E402
+from governance.core.agent_interface import AgentInterface
 
 REQUIRED_METHODS = ["observe", "act", "get_metrics", "get_capabilities"]
 OPTIONAL_METHODS = ["on_governance_alert", "shutdown"]
@@ -46,7 +46,7 @@ def validate_agent(agent_module_path: str, strict: bool = False) -> dict:
             result["errors"].append(f"No loader for: {agent_module_path}")
             return result
         spec.loader.exec_module(module)
-    except Exception as e:
+    except (ImportError, SyntaxError, AttributeError) as e:
         result["errors"].append(f"Import failed: {e}")
         return result
 

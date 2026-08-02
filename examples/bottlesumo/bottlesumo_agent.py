@@ -1,4 +1,4 @@
-"""
+﻿"""
 Reference Implementation: BottleSumo Agent
 
 Demonstrates how to integrate a sumo robot agent with the
@@ -63,7 +63,7 @@ class BottleSumoAgent(AgentInterface):
                 "done": terminated or truncated,
                 "info": info or {},
             }
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 -- RL envs need stability
             return {
                 "status": "error",
                 "reward": -1.0,
@@ -91,7 +91,7 @@ class BottleSumoAgent(AgentInterface):
         ]
 
 
-# ── Quick Test ──
+# ?? Quick Test ??
 if __name__ == "__main__":
     agent = BottleSumoAgent()
     print("BottleSumoAgent created successfully")

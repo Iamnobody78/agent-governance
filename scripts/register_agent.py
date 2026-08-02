@@ -8,7 +8,7 @@ from pathlib import Path
 from scripts.validate_interfaces import validate_agent
 
 
-def register(agent_path: str, agent_name: str = None) -> dict:
+def register(agent_path: str, agent_name: str | None = None) -> dict:
     """Validate and register an agent."""
     agent_name = agent_name or Path(agent_path).stem
     print(f"Registering agent: {agent_name}")

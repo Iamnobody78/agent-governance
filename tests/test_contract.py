@@ -1,13 +1,11 @@
 """Contract Tests — verify AgentInterface compliance."""
 
-import pytest
 import sys
 from pathlib import Path
 
 _PROJECT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_PROJECT))
 
-from governance.core.agent_interface import AgentInterface
 
 
 def test_bottlesumo_agent_implements_all_methods():
@@ -83,7 +81,9 @@ def test_monotonic_constraint_import():
 def test_meta_theory_consistency_import():
     """P0 meta-theory checker is importable with class + constants."""
     from governance.meta.meta_theory_consistency import (
-        ConsistencyChecker, CONFLICT_PAIRS, SEVERITY_WEIGHT,
+        CONFLICT_PAIRS,
+        SEVERITY_WEIGHT,
+        ConsistencyChecker,
     )
     assert len(CONFLICT_PAIRS) == 12, "Must have 12 conflict pairs"
     assert len(SEVERITY_WEIGHT) == 5, "Must have P0-P4 weights"
@@ -122,7 +122,7 @@ def test_meta_theory_consistency_full_pipeline():
     """Full pipeline: detect -> compute -> report."""
     from governance.meta.meta_theory_consistency import ConsistencyChecker
     checker = ConsistencyChecker()
-    conflicts = checker.detect_conflicts()
+    checker.detect_conflicts()
     score = checker.compute_score()
 
     assert 0.0 <= score["consistency_score"] <= 100.0

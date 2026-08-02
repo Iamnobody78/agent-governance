@@ -45,7 +45,7 @@ SEVERITY_WEIGHT = {"P0": 10, "P1": 6, "P2": 3, "P3": 1, "P4": 0.3}
 class ConsistencyChecker:
     """Checks logical consistency across 42 meta-layers."""
 
-    def __init__(self, audit_report_path: str = None):
+    def __init__(self, audit_report_path: str | None = None):
         self.report_path = audit_report_path or self._latest_report()
         self._load()
 

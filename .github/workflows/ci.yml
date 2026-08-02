@@ -64,10 +64,11 @@ jobs:
           python scripts/self_heal.py || echo "Self-heal attempted (non-blocking)"
       - name: Push Hotfix Branch
         if: success()
+        continue-on-error: true
         run: |
-          git config user.name "governance-agent[bot]"
-          git config user.email "agent@bottlesumo.dev"
-          git checkout -b hotfix/ci_fix_$(date +%Y%m%d_%H%M%S)
-          git add liquid/ghosts/
-          git commit -m "auto: self-heal patch from CI failure" || true
+          git config user.name "governance-agent[bot]" || true
+          git config user.email "agent@bottlesumo.dev" || true
+          git checkout -b hotfix/ci_fix_$(date +%Y%m%d_%H%M%S) 2>/dev/null || git checkout hotfix/ci_fix_$(date +%Y%m%d_%H%M%S) 2>/dev/null || true
+          git add liquid/ghosts/ 2>/dev/null || true
+          git commit -m "auto: self-heal patch from CI failure" 2>/dev/null || true
           git push origin HEAD 2>/dev/null || echo "Push skipped (no remote or no changes)"

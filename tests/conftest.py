@@ -1,5 +1,4 @@
 """Pytest configuration — register custom markers."""
-import pytest
 
 pytest_plugins = []
 

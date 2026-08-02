@@ -24,6 +24,11 @@ from enum import Enum
 from pathlib import Path
 from typing import Optional
 
+from .adp_taxonomy import (
+    ADPClassification,
+    map_to_adp,
+)
+
 
 # ── Verdict ──────────────────────────────────────────────────────────────────
 
@@ -66,9 +71,10 @@ class BoundaryReport:
     reasoning: str                  # 推理过程
     recommended_channel: str        # 推荐的外部验证通道
     confidence: float               # 0-1
+    adp_classification: dict | None = None  # ADP-compliant decision classification
 
     def to_dict(self) -> dict:
-        return {
+        result = {
             "proposition_id": self.proposition_id,
             "verdict": self.verdict.value,
             "self_reference_score": self.self_reference_score,
@@ -77,6 +83,9 @@ class BoundaryReport:
             "recommended_channel": self.recommended_channel,
             "confidence": self.confidence,
         }
+        if self.adp_classification is not None:
+            result["adp_classification"] = self.adp_classification
+        return result
 
 
 # ── GodelianBoundary ─────────────────────────────────────────────────────────
@@ -151,6 +160,11 @@ class GodelianBoundary:
             proposition, self_ref_score, circular_deps
         )
 
+        confidence = self._compute_confidence(self_ref_score, circular_deps)
+
+        # ADP classification: map Godelian verdict to enterprise-compliant taxonomy
+        adp = self._adp_classify(verdict, proposition, self_ref_score, confidence)
+
         report = BoundaryReport(
             proposition_id=proposition.id,
             verdict=verdict,
@@ -158,7 +172,8 @@ class GodelianBoundary:
             circular_dependencies=circular_deps,
             reasoning=reasoning,
             recommended_channel=self._recommend_channel(verdict, proposition),
-            confidence=self._compute_confidence(self_ref_score, circular_deps),
+            confidence=confidence,
+            adp_classification=adp.to_dict() if adp else None,
         )
 
         self._reports.append(report)
@@ -346,6 +361,36 @@ class GodelianBoundary:
     def reset(self):
         self._reports.clear()
 
+    # ── ADP Classification ─────────────────────────────────────────────────
+
+    def _adp_classify(
+        self,
+        verdict: GodelianVerdict,
+        proposition: Proposition,
+        self_ref_score: float,
+        confidence: float,
+    ) -> ADPClassification | None:
+        """Map a Godelian verdict to ADP (Agent Decision Protocol) taxonomy.
+
+        This produces enterprise-compliant decision classifications for audit trails,
+        following the ADP open standard.
+
+        Args:
+            verdict: The Godelian verdict (SAFE/INTERNAL/EXTERNALIZE/UNDECIDABLE)
+            proposition: The original proposition being analyzed
+            self_ref_score: 0-1 self-reference score
+            confidence: 0-1 confidence in the verdict
+
+        Returns:
+            ADPClassification with autonomy level, decision type, risk, reversibility
+        """
+        return map_to_adp(
+            godelian_verdict=verdict.value,
+            proposition_category=proposition.category,
+            self_ref_score=self_ref_score,
+            confidence=confidence,
+        )
+
     # ── Observability ────────────────────────────────────────────────────
 
     def get_state(self) -> dict:
@@ -382,11 +427,32 @@ class GodelianBoundary:
             "top_circular_patterns": [
                 {"pattern": p, "count": c} for p, c in top_circular
             ],
+            "adp_risk_distribution": self._adp_risk_counts(),
+            "adp_autonomy_distribution": self._adp_autonomy_counts(),
             "config": {
                 "self_ref_threshold": self.self_ref_threshold,
                 "undecidable_threshold": self.undecidable_threshold,
             },
         }
+
+    def _adp_risk_counts(self) -> dict:
+        """Count ADP risk levels across all reports."""
+        from .adp_taxonomy import RiskLevel
+        counts: dict[str, int] = {}
+        for r in self._reports:
+            if r.adp_classification:
+                rl = r.adp_classification.get("risk_level", "unknown")
+                counts[rl] = counts.get(rl, 0) + 1
+        return counts
+
+    def _adp_autonomy_counts(self) -> dict:
+        """Count ADP autonomy levels across all reports."""
+        counts: dict[str, int] = {}
+        for r in self._reports:
+            if r.adp_classification:
+                al = r.adp_classification.get("autonomy_level", "unknown")
+                counts[al] = counts.get(al, 0) + 1
+        return counts
 
 
 # ── RealityBridge Integration ───────────────────────────────────────────────

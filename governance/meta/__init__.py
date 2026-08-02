@@ -24,6 +24,14 @@ from governance.meta.digital_twin_calibrator import (
 from governance.meta.config_loader import (
     ConfigLoader, MetaConfig, FPDConfig, GBConfig, MCLConfig,
 )
+from governance.meta.adp_taxonomy import (
+    ADPClassification, AutonomyLevel, DecisionType, RiskLevel,
+    Reversibility, map_to_adp,
+)
+from governance.meta.reality_bridge import (
+    ExtendedRealityBridgeRouter, TaGHookRegistry, TaGHook, TaGHookType,
+    TaGHookAction, TaGHookResult, TaGRoutingResult,
+)
 
 __all__ = [
     # P0
@@ -34,6 +42,12 @@ __all__ = [
     # Phase 2
     "GodelianBoundary", "GodelianVerdict", "Proposition",
     "BoundaryReport", "PropositionGenerator", "RealityBridgeRouter",
+    # ADP
+    "ADPClassification", "AutonomyLevel", "DecisionType", "RiskLevel",
+    "Reversibility", "map_to_adp",
+    # RealityBridge + TaG
+    "ExtendedRealityBridgeRouter", "TaGHookRegistry", "TaGHook",
+    "TaGHookType", "TaGHookAction", "TaGHookResult", "TaGRoutingResult",
     # Phase 3
     "MetaCognitiveLoop", "DecisionLog", "FailurePattern", "GapReport",
     "LoopPhase", "LoopTrace", "SelfCheckBenchmark", "Strategy", "StrategyType",
